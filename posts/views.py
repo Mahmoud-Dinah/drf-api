@@ -1,11 +1,16 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from .models import Post
+from rest_framework import generics
 from .serializers import PostSerializer
+from .models import Posts
+from .permissions import IsOwnerOrReadOnly
 
-class PostsList(ListCreateAPIView):
-    queryset = Post.objects.all()
+# Create your views here.
+
+class PostList(generics.ListCreateAPIView):
+
+    queryset = Posts.objects.all()
     serializer_class = PostSerializer
 
-class PostsDetail(RetrieveUpdateDestroyAPIView):
-    queryset = Post.objects.all()
+class PostDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+    queryset = Posts.objects.all()
     serializer_class = PostSerializer
